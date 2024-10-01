@@ -29,28 +29,24 @@ def get_all():
     return user_list
 
 
-def create(username: str, password: str):
-    if exists(username):
+def create(user_data: dict):
+    if exists(user_data):
         return None
     # password_hash = bcrypt_instance.hashpw(password.encode('utf8'), bcrypt_instance.gensalt())
     # user_object = User(username, password_hash.decode('utf8'))
-    user_object = User(
-        username, bcrypt_instance.generate_password_hash(password).decode("utf8")
-    )
+    user_object = User(**user_data)
     db.session.add(user_object)
     db.session.commit()
     user_dict = UserSchema(exclude=("password",)).dump(user_object)
     return user_dict
 
 
-def update(id: int, username: str, password: str):
+def update(user_data: dict):
     user_object = (
         db.session.query(User).filter(User.id == id, User.status == True).first()
     )
-    user_object.username = username
-    user_object.password = bcrypt_instance.generate_password_hash(password).decode(
-        "utf8"
-    )
+    user_object.__dict__.update(user_data)
+
     db.session.commit()
     user_dict = UserSchema(exclude=("password",)).dump(user_object)
     return user_dict

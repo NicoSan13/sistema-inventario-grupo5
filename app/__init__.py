@@ -81,6 +81,13 @@ for blueprint in __blueprints__:
     app.register_blueprint(blueprint)
 
 
+@app.cli.command("seed-data")
+def seed_data_command():
+    from app.seed_data import seed_data
+
+    seed_data()
+
+
 @app.route("/", methods=["GET"])
 def test():
-    return "Template API-Flask"
+    return "Sistema de Inventario - API"

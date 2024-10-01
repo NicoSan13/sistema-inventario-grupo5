@@ -12,9 +12,14 @@ def login(username: str, password: str):
     )
     if user_object is not None:
         if bcrypt_instance.check_password_hash(user_object.password, password):
-            user_identity = {"id": user_object.id, "username": user_object.username}
+            user_identity = {
+                "id": user_object.id,
+                "username": user_object.username,
+                "name": user_object.name,
+                "lastname": user_object.lastname,
+                "email": user_object.email,
+            }
             access_token = create_access_token(identity=user_identity)
-            # refresh_token = create_refresh_token(identity=user_identity)
             return {"access_token": access_token}
         else:
             return None
