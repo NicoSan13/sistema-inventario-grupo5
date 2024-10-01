@@ -18,8 +18,19 @@ def get_warehouse(warehouse_id: int = None):
             "success", data={"warehouse": warehouse_dict}, status_code=200
         )
     else:
-        warehouse_list_obj = warehouse_service.get_all_warehouses()
-        warehouse_list_dict = WarehouseSchema(many=True).dump(warehouse_list_obj)
+        warehouse_list_dict = warehouse_service.get_all_warehouses()
         return create_response(
             "success", data={"warehouses": warehouse_list_dict}, status_code=200
         )
+
+
+@warehouse_blueprint.route("/", methods=["POST"])
+@jwt_required()
+def create_warehouse():
+    current_user = get_jwt()
+    warehouse_data = request.get_json()
+    warehouse_data["user_creation"] = current_user["sub"]["username"]
+    warehouse_dict = warehouse_service.create(warehouse_data)
+    return create_response(
+        "success", data={"warehouse": warehouse_dict}, status_code=201
+    )

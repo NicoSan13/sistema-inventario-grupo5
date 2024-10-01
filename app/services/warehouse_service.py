@@ -18,3 +18,12 @@ def get_warehouse_by_id(warehouse_id: int):
     warehouse_dict = WarehouseSchema().dump(warehouse)
 
     return warehouse_dict
+
+
+def create(warehouse_data: dict):
+    warehouse_object = Warehouse(**warehouse_data)
+    db.session.add(warehouse_object)
+    db.session.commit()
+    warehouse_dict = WarehouseSchema().dump(warehouse_object)
+
+    return warehouse_dict
