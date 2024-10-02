@@ -16,7 +16,7 @@ def get_all_products(even_inactive: bool = False):
     return products_list
 
 
-def get_product_by_id(product_id: int):
+def get_product_by_id(product_id: int, even_inactive: bool = False):
     product = db.session.query(Product).filter(Product.id == product_id).first()
     product_dict = ProductSchema().dump(product)
 
@@ -73,8 +73,38 @@ def update(product_id: int, product_data: dict):
         .filter(Product.id == product_id, Product.status == True)
         .first()
     )
-    product_object.__dict__.update(product_data)
+
+    for key, value in product_data.items():
+        setattr(product_object, key, value)
 
     db.session.commit()
     product_dict = ProductSchema().dump(product_object)
     return product_dict
+
+
+def disable(product_id: int, current_user: str):
+    product_object = db.session.query(Product).filter(Product.id == product_id).first()
+    if product_object is None:
+        return (False, "Producto no encontrado")
+    if product_object.status == False:
+        return (False, "Producto ya se encuentra deshabilitado")
+    product_object.status = False
+    product_object.date_modification = timeNowTZ()
+    product_object.user_modification = current_user
+    db.session.commit()
+
+    return (True, "Producto deshabilitado con éxito")
+
+
+def enable(product_id: int, current_user: str):
+    product_object = db.session.query(Product).filter(Product.id == product_id).first()
+    if product_object is None:
+        return (False, "Producto no encontrado")
+    if product_object.status == True:
+        return (False, "Producto ya se encuentra habilitado")
+    product_object.status = True
+    product_object.date_modification = timeNowTZ()
+    product_object.user_modification = current_user
+    db.session.commit()
+
+    return (True, "Producto habilitado con éxito")

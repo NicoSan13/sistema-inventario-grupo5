@@ -10,86 +10,16 @@ def timeNowTZ():
     return datetime.now(TZ_EC)
 
 
-def validate_identification(value: str):
+def validate_boolean(bool_string: str) -> bool:
+    """Valida que el valor sea un booleano (True o False) y lo retorna en formato booleano.
+
+    Args:
+        `bool_string` (str): Cadena a validar.
+
+    Returns:
+        `bool`: Valor booleano.
+        `None`: Si el valor no es un booleano.
     """
-    Valida que el número de cédula sea correcto.
-    """
-    if not value.isdigit() or len(value) != 10:
+    if bool_string.lower() not in ["true", "false"]:
         return False
-    #     raise ValueError("'{}' debe ser numérico.".format(value))
-    #  if len(value) != 10:
-    #     raise ValueError("'{}' debe tener 10 dígitos.".format(value))
-
-    # sin ceros a la izquierda
-    nocero = value.lstrip("0")
-
-    cedula = int(nocero, 0)
-    verificador = cedula % 10
-    numero = cedula // 10
-
-    # mientras tenga números
-    suma = 0
-    while numero > 0:
-        # posición impar
-        posimpar = numero % 10
-        numero = numero // 10
-        posimpar = 2 * posimpar
-        if posimpar > 9:
-            posimpar = posimpar - 9
-
-        # posición par
-        pospar = numero % 10
-        numero = numero // 10
-
-        suma = suma + posimpar + pospar
-
-    decenasup = suma // 10 + 1
-    calculado = decenasup * 10 - suma
-    if calculado >= 10:
-        calculado = calculado - 10
-
-    if calculado == verificador:
-        validado = 1
-    else:
-        validado = 0
-
-    return bool(validado)
-
-
-def calculate_age(birthdate: datetime):
-    """
-    Calcula la edad de una persona.
-    """
-    today = timeNowTZ()
-    return (
-        today.year
-        - birthdate.year
-        - ((today.month, today.day) < (birthdate.month, birthdate.day))
-    )
-
-
-def calculate_string_age(birthdate: datetime, now: datetime = None):
-    """
-    Calcula la edad de una persona en formato {} años {} meses {} días.
-    """
-    if now is None:
-        now = datetime.now()
-    diff = now - birthdate
-
-    years = diff.days // 365
-    months = (diff.days % 365) // 30
-    days = (diff.days % 365) % 30
-
-    str_age = ""
-    if years > 0:
-        str_age += f"{years} {'año' if years == 1 else 'años'}"
-    if months > 0:
-        if years > 0:
-            str_age += ", "
-        str_age += f"{months} {'mes' if months == 1 else 'meses'}"
-    if days > 0:
-        if years > 0 or months > 0:
-            str_age += " y "
-        str_age += f"{days} {'día' if days == 1 else 'días'}"
-
-    return str_age
+    return bool_string.lower() == "true"
