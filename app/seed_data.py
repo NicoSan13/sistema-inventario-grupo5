@@ -9,23 +9,15 @@ from app.utils.utilities import timeNowTZ
 
 def seed_data():
     if db.session.query(User).count() == 0:
-        nalava_user = User(
-            username="nalava",
-            password="Nalava2024*",
-            name="Nico",
-            lastname="Alava",
-            email="nico@example.com",
-        )
-        bmacias_user = User(
-            username="bmacias",
-            password="Bmacias2024*",
-            name="Bryan",
-            lastname="Macias",
-            email="bryan@example.com",
+        prueba_user = User(
+            username="jdoe",
+            password="Jdoe2024*",
+            name="John",
+            lastname="Doe",
+            email="john.doe@example.com",
         )
 
-        db.session.add(nalava_user)
-        db.session.add(bmacias_user)
+        db.session.add(prueba_user)
         db.session.commit()
 
     if db.session.query(Product).count() == 0:
@@ -34,21 +26,21 @@ def seed_data():
             description="Laptop de alto rendimiento con 16GB RAM y 512GB SSD",
             price=1200.99,
             category="Electrónica",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         mouse = Product(
             name="Mouse Óptico",
             description="Mouse inalámbrico ergonómico",
             price=25.50,
             category="Accesorios",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         keyboard = Product(
             name="Teclado Mecánico",
             description="Teclado mecánico retroiluminado",
             price=85.75,
             category="Accesorios",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
 
         db.session.add(laptop)
@@ -60,17 +52,17 @@ def seed_data():
         central = Warehouse(
             name="Bodega Central",
             location="Av. Principal 123, Ciudad Central",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         norte = Warehouse(
             name="Bodega Norte",
             location="Calle Secundaria 45, Zona Norte",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         sur = Warehouse(
             name="Bodega Sur",
             location="Carretera Nacional, Km 15, Zona Sur",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
 
         db.session.add(central)
@@ -115,25 +107,25 @@ def seed_data():
             product_id=laptop_id,
             warehouse_id=central_id,
             current_stock=50,
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         inventory_mouse_central = Inventory(
             product_id=mouse_id,
             warehouse_id=central_id,
             current_stock=200,
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         inventory_keyboard_norte = Inventory(
             product_id=keyboard_id,
             warehouse_id=norte_id,
             current_stock=150,
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         inventory_laptop_sur = Inventory(
             product_id=laptop_id,
             warehouse_id=sur_id,
             current_stock=20,
-            user_creation="nalava",
+            user_creation="jdoe",
         )
 
         db.session.add(inventory_laptop_central)
@@ -143,7 +135,7 @@ def seed_data():
         db.session.commit()
 
     if db.session.query(ProductMovement).count() == 0:
-        nalava_id = db.session.query(User).filter(User.username == "nalava").first().id
+        jdoe_id = db.session.query(User).filter(User.username == "jdoe").first().id
         laptop_id = (
             db.session.query(Product).filter(Product.name == "Laptop X200").first().id
         )
@@ -178,52 +170,52 @@ def seed_data():
         movement_laptop_central = ProductMovement(
             product_id=laptop_id,
             warehouse_id=central_id,
-            user_id=nalava_id,
+            user_id=jdoe_id,
             movement_type="ENTRADA",
             movement_date=timeNowTZ(),
             quantity=50,
             comments="Recepción de nuevo lote de Laptops X200",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         movement_mouse_central = ProductMovement(
             product_id=mouse_id,
             warehouse_id=central_id,
-            user_id=nalava_id,
+            user_id=jdoe_id,
             movement_type="ENTRADA",
             movement_date=timeNowTZ(),
             quantity=200,
             comments="Recepción de Mouse Óptico",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         movement_keyboard_norte = ProductMovement(
             product_id=keyboard_id,
             warehouse_id=norte_id,
-            user_id=nalava_id,
+            user_id=jdoe_id,
             movement_type="ENTRADA",
             movement_date=timeNowTZ(),
             quantity=150,
             comments="Ingreso de Teclado Mecánico a Bodega Norte",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         movement_laptop_sur = ProductMovement(
             product_id=laptop_id,
             warehouse_id=sur_id,
-            user_id=nalava_id,
+            user_id=jdoe_id,
             movement_type="SALIDA",
             movement_date=timeNowTZ(),
             quantity=10,
             comments="Transferencia de Laptops X200 a Bodega Sur",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
         movement_mouse_sale = ProductMovement(
             product_id=mouse_id,
             warehouse_id=central_id,
-            user_id=nalava_id,
+            user_id=jdoe_id,
             movement_type="SALIDA",
             movement_date=timeNowTZ(),
             quantity=50,
             comments="Venta de Mouse Óptico",
-            user_creation="nalava",
+            user_creation="jdoe",
         )
 
         db.session.add(movement_laptop_central)

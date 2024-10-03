@@ -53,6 +53,17 @@ def get_movement(movement_id: int):
     return movement_dict
 
 
+def get_movements_by_product(product_id: int):
+    movements = (
+        db.session.query(ProductMovement)
+        .filter(ProductMovement.product_id == product_id)
+        .all()
+    )
+    movements_list = ProductMovementSchema(many=True).dump(movements)
+    movements_list = [__get_additional_data(movement) for movement in movements_list]
+    return movements_list
+
+
 def register_movement(product_movement_data: dict):
     product_id = product_movement_data["product_id"]
     warehouse_id = product_movement_data["warehouse_id"]

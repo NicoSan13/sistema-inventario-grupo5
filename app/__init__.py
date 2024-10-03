@@ -9,7 +9,6 @@ if environ.get("ENVIRONMENT") == "PROD":
     app.config.from_object("app.config.ProductionConfig")
 else:
     app.config.from_object("app.config.DevelopmentConfig")
-CORS(app)
 
 with app.app_context():
     from app.extensions import db, jwt, bcrypt_instance
@@ -22,6 +21,7 @@ with app.app_context():
     jwt.init_app(app)
     bcrypt_instance.init_app(app)
     DeclarativeBase.metadata.create_all(db.engine, checkfirst=True)
+    CORS(app, resources={r"http://localhost:3000/*": {"origins": "*"}})
 
 
 @jwt.revoked_token_loader

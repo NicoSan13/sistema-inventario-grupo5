@@ -39,3 +39,12 @@ def register_movement():
         return create_response(
             "success", data={"message": movement_response[1]}, status_code=201
         )
+
+
+@movement_blueprint.route("/product/<int:product_id>", methods=["GET"])
+@jwt_required()
+def get_movements_by_product(product_id: int):
+    movements_list_dict = product_movement_service.get_movements_by_product(product_id)
+    return create_response(
+        "success", data={"movements": movements_list_dict}, status_code=200
+    )

@@ -12,8 +12,8 @@ class config(object):
     JWT_ALGORITHM = "RS256"
     JWT_PRIVATE_KEY = open("app/static/private_key.pem").read()  #: Algoritmo asimétrico
     JWT_PUBLIC_KEY = open("app/static/public_key.pem").read()  #: Algoritmo asimétrico
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=8760)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=8760)
 
 
 class DevelopmentConfig(config):

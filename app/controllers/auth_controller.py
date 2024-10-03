@@ -3,12 +3,14 @@ from flask_jwt_extended import jwt_required, get_jwt
 from app.utils.response import create_response
 from app.services import auth_service
 from app.schemas.auth_schema import AuthSchema
+from flask_cors import cross_origin
 
 auth_blueprint = Blueprint("Auth", __name__, url_prefix="/auth")
 """Entidad - Autenticación"""
 
 
 @auth_blueprint.route("/login", methods=["POST"])
+@cross_origin()
 def login():
     json_data = request.get_json(force=True)
     json_data = AuthSchema().load(json_data)
